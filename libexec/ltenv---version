@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Summary: Display the version of ltenv
+#
+# Displays the version number of this ltenv release, including the
+# current revision from git, if available.
+#
+# The format of the git revision is:
+#   <version>-<num_commits>-<git_sha>
+# where `num_commits` is the number of commits since `version` was
+# tagged.
+
+set -e
+[ -n "$LTENV_DEBUG" ] && set -x
+
+version="0.1.0"
+git_revision=""
+
+for source_dir in "${BASH_SOURCE%/*}" "$LTENV_ROOT"; do
+  if cd "$source_dir" 2>/dev/null && git remote -v 2>/dev/null | grep -q ltenv; then
+    git_revision="$(git describe --tags HEAD 2>/dev/null || true)"
+    git_revision="${git_revision#v}"
+    [ -z "$git_revision" ] || break
+  fi
+done
+
+echo "ltenv ${git_revision:-$version}"

@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+#
+# Summary: Set or show the global LaTeX version
+#
+# Usage: ltenv global <version>
+#
+# Sets the global Ruby version. You can override the global version at
+# any time by setting a directory-specific version with `ltenv local'
+# or by setting the `LTENV_VERSION' environment variable.
+#
+# <version> should be a string matching a Ruby version known to ltenv.
+# The special version string `system' will use your default system Ruby.
+# Run `ltenv versions' for a list of available Ruby versions.
+
+set -e
+[ -n "$LTENV_DEBUG" ] && set -x
+
+# Provide ltenv completions
+if [ "$1" = "--complete" ]; then
+  echo system
+  exec ltenv-versions --bare
+fi
+
+LTENV_VERSION="$1"
+LTENV_VERSION_FILE="${LTENV_ROOT}/version"
+
+if [ -n "$LTENV_VERSION" ]; then
+  ltenv-version-file-write "$LTENV_VERSION_FILE" "$LTENV_VERSION"
+else
+  ltenv-version-file-read "$LTENV_VERSION_FILE" ||
+  ltenv-version-file-read "${LTENV_ROOT}/global" ||
+  ltenv-version-file-read "${LTENV_ROOT}/default" ||
+  echo system
+fi

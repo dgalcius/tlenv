@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+#
+# Summary: Display the full path to an executable
+#
+# Usage: ltenv which <command>
+#
+# Displays the full path to the executable that ltenv will invoke when
+# you run the given command.
+
+set -e
+[ -n "$LTENV_DEBUG" ] && set -x
+
+# Provide ltenv completions
+if [ "$1" = "--complete" ]; then
+  exec ltenv-shims --short
+fi
+
+remove_from_path() {
+  local path_to_remove="$1"
+  local path_before
+  local result=":$PATH:"
+  while [ "$path_before" != "$result" ]; do
+    path_before="$result"
+    result="${result//:$path_to_remove:/:}"
+  done
+  echo "${result%:}"
+}
+
+LTENV_COMMAND="$1"
+
+if [ -z "$LTENV_COMMAND" ]; then
+  ltenv-help --usage which >&2
+  exit 1
+fi
+
+LTENV_VERSION="${LTENV_VERSION:-$(ltenv-version-name)}"
+
+if [ "$LTENV_VERSION" = "system" ]; then
+  PATH="$(remove_from_path "${LTENV_ROOT}/shims")"
+  LTENV_COMMAND_PATH="$(command -v "$LTENV_COMMAND" || true)"
+else
+    ## DG ##
+    ##    LTENV_COMMAND_PATH="${LTENV_ROOT}/versions/${LTENV_VERSION}/bin/${LTENV_COMMAND}"
+    LTENV_COMMAND_PATH=`grep "^$LTENV_VERSION " $LTENV_VERSIONS_FILE | awk '{ print $2 }'`
+    LTENV_COMMAND_TEXMFCNF=`grep "^$LTENV_VERSION " $LTENV_VERSIONS_FILE | awk '{ print $3 }'`
+fi
+
+## DG ##
+## OLDIFS="$IFS"
+## IFS=$'\n' scripts=(`ltenv-hooks which`)
+## IFS="$OLDIFS"
+## for script in "${scripts[@]}"; do
+##   source "$script"
+## done
+
+if [ -x "$LTENV_COMMAND_PATH" ]; then
+  echo "$LTENV_COMMAND_PATH"
+elif [ "$LTENV_VERSION" != "system" ] && [ ! -d "${LTENV_ROOT}/versions/${LTENV_VERSION}" ]; then
+  echo "ltenv: version \`$LTENV_VERSION' is not installed (set by $(ltenv-version-origin))" >&2
+  exit 1
+else
+  echo "ltenv: $LTENV_COMMAND: command not found" >&2
+
+  versions="$(ltenv-whence "$LTENV_COMMAND" || true)"
+  if [ -n "$versions" ]; then
+    { echo
+      echo "The \`$1' command exists in these Ruby versions:"
+      echo "$versions" | sed 's/^/  /g'
+      echo
+    } >&2
+  fi
+
+  exit 127
+fi

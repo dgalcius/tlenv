@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+#
+# Summary: Run an executable with the selected Ruby version
+#
+# Usage: ltenv exec <command> [arg1 arg2...]
+#
+# Runs an executable by first preparing PATH so that the selected Ruby
+# version's `bin' directory is at the front.
+#
+# For example, if the currently selected Ruby version is 1.9.3-p327:
+#   ltenv exec bundle install
+#
+# is equivalent to:
+#   PATH="$LTENV_ROOT/versions/1.9.3-p327/bin:$PATH" bundle install
+
+set -e
+
+[ -n "$LTENV_DEBUG" ] && set -x
+
+
+
+# Provide ltenv completions
+if [ "$1" = "--complete" ]; then
+  exec ltenv-shims --short
+fi
+
+LTENV_VERSION="$(ltenv-version-name)"
+LTENV_COMMAND="$1"
+
+## DG ##
+LTENV_COMMAND_PATH=`grep "^$LTENV_VERSION " $LTENV_VERSIONS_FILE | awk '{ print $2 }'`
+LTENV_COMMAND_TEXMFCNF=`grep "^$LTENV_VERSION " $LTENV_VERSIONS_FILE | awk '{ print $3 }'`
+
+
+
+
+if [ -z "$LTENV_COMMAND" ]; then
+  ltenv-help --usage exec >&2
+  exit 1
+fi
+
+
+
+export LTENV_VERSION
+## DG ##
+## LTENV_COMMAND_PATH="$(ltenv-which "$LTENV_COMMAND")"
+## LTENV_BIN_PATH="${LTENV_COMMAND_PATH%/*}"
+LTENV_BIN_PATH=$LTENV_COMMAND_PATH
+
+
+
+
+## DG ##
+## OLDIFS="$IFS"
+## IFS=$'\n' scripts=(`ltenv-hooks exec`)
+## IFS="$OLDIFS"
+## for script in "${scripts[@]}"; do
+##   source "$script"
+## done
+
+
+shift 1
+if [ "$LTENV_VERSION" != "system" ]; then
+    export PATH="${LTENV_BIN_PATH}:${PATH}"
+    export TEXMFCNF=$LTENV_COMMAND_TEXMFCNF
+fi
+exec -a "$LTENV_COMMAND" "$LTENV_COMMAND_PATH/$LTENV_COMMAND" "$@"

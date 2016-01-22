@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+#
+# Summary: Set or show the local application-specific LaTeX version
+#
+# Usage: ltenv local <version>
+#        ltenv local --unset
+#
+# Sets the local application-specific LaTeX version by writing the
+# version name to a file named `.ruby-version'.
+#
+# When you run a LaTeX command, ltenv will look for a `.latex-version'
+# file in the current directory and each parent directory. If no such
+# file is found in the tree, ltenv will use the global Ruby version
+# specified with `ltenv global'. A version specified with the
+# `LTENV_VERSION' environment variable takes precedence over local
+# and global versions.
+#
+# For backwards compatibility, ltenv will also read version
+# specifications from `.ltenv-version' files, but a `.latex-version'
+# file in the same directory takes precedence.
+#
+# <version> should be a string matching a LaTeX version known to ltenv.
+# The special version string `system' will use your default system LaTeX.
+# Run `ltenv versions' for a list of available Ruby versions.
+
+set -e
+[ -n "$LTENV_DEBUG" ] && set -x
+
+# Provide ltenv completions
+if [ "$1" = "--complete" ]; then
+  echo --unset
+  echo system
+  exec ltenv-versions --bare
+fi
+
+LTENV_VERSION="$1"
+
+if [ "$LTENV_VERSION" = "--unset" ]; then
+  rm -f .ruby-version .ltenv-version
+elif [ -n "$LTENV_VERSION" ]; then
+  previous_file="$(LTENV_VERSION= ltenv-version-origin || true)"
+  ltenv-version-file-write .ruby-version "$LTENV_VERSION"
+  if [ "$previous_file" -ef .ltenv-version ]; then
+    rm -f .ltenv-version
+    { echo "ltenv: removed existing \`.ltenv-version' file and migrated"
+      echo "       local version specification to \`.ruby-version' file"
+    } >&2
+  fi
+else
+  ltenv-version-file-read .ruby-version ||
+  ltenv-version-file-read .ltenv-version ||
+  { echo "ltenv: no local version configured for this directory"
+    exit 1
+  } >&2
+fi

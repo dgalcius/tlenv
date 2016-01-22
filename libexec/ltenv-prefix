@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# Summary: Display prefix for a Ruby version
+# Usage: ltenv prefix [<version>]
+#
+# Displays the directory where a Ruby version is installed. If no
+# version is given, `ltenv prefix' displays the location of the
+# currently selected version.
+
+set -e
+[ -n "$LTENV_DEBUG" ] && set -x
+
+# Provide ltenv completions
+if [ "$1" = "--complete" ]; then
+  echo system
+  exec ltenv-versions --bare
+fi
+
+if [ -n "$1" ]; then
+  export LTENV_VERSION="$1"
+elif [ -z "$LTENV_VERSION" ]; then
+  LTENV_VERSION="$(ltenv-version-name)"
+fi
+
+##if [ "$LTENV_VERSION" = "system" ]; then
+  if LATEX_PATH="$(ltenv-which latex 2>/dev/null)"; then
+    LATEX_PATH="${LATEX_PATH%/*}"
+    echo "${LATEX_PATH%/bin}"
+    exit
+  else
+    echo "ltenv: system version not found in PATH" >&2
+    exit 1
+  fi
+##fi
+
+##LTENV_PREFIX_PATH="${LTENV_ROOT}/versions/${LTENV_VERSION}"
+if [ ! -d "$LATEX_PATH" ]; then
+  echo "ltenv: version \`${LTENV_VERSION}' not installed" >&2
+  exit 1
+fi
+
+echo "$LATEX_PATH"

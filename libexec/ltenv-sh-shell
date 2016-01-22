@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+#
+# Summary: Set or show the shell-specific LaTeX version
+#
+# Usage: ltenv shell <version>
+#        ltenv shell --unset
+#
+# Sets a shell-specific LaTeX version by setting the `LTENV_VERSION'
+# environment variable in your shell. This version overrides local
+# application-specific versions and the global version.
+#
+# <version> should be a string matching a LaTeX version known to ltenv.
+# The special version string `system' will use your default system Ruby.
+# Run `ltenv versions' for a list of available LaTeX versions.
+
+set -e
+[ -n "$LTENV_DEBUG" ] && set -x
+
+# Provide ltenv completions
+if [ "$1" = "--complete" ]; then
+  echo --unset
+  echo system
+  exec ltenv-versions --bare
+fi
+
+version="$1"
+shell="$(basename "${LTENV_SHELL:-$SHELL}")"
+
+if [ -z "$version" ]; then
+  if [ -z "$LTENV_VERSION" ]; then
+    echo "ltenv: no shell-specific version configured" >&2
+    exit 1
+  else
+    echo "echo \"\$LTENV_VERSION\""
+    exit
+  fi
+fi
+
+if [ "$version" = "--unset" ]; then
+  case "$shell" in
+  fish )
+    echo "set -e LTENV_VERSION"
+    ;;
+  * )
+    echo "unset LTENV_VERSION"
+    ;;
+  esac
+  exit
+fi
+
+# Make sure the specified version is installed.
+if ltenv-prefix "$version" >/dev/null; then
+  case "$shell" in
+  fish )
+    echo "setenv LTENV_VERSION \"${version}\""
+    ;;
+  * )
+    echo "export LTENV_VERSION=\"${version}\""
+    ;;
+  esac
+else
+  echo "false"
+  exit 1
+fi

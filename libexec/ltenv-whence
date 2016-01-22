@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+# Summary: List all LaTeX versions that contain the given executable
+# Usage: ltenv whence [--path] <command>
+
+set -e
+[ -n "$LTENV_DEBUG" ] && set -x
+
+# Provide ltenv completions
+if [ "$1" = "--complete" ]; then
+  echo --path
+  exec ltenv-shims --short
+fi
+
+if [ "$1" = "--path" ]; then
+  print_paths="1"
+  shift
+else
+  print_paths=""
+fi
+
+whence() {
+  local command="$1"
+  ltenv-versions --bare | while read version; do
+      ##    path="$(ltenv-prefix "$version")/bin/${command}"
+          path="$(ltenv-prefix "$version")/bin/"
+    if [ -x "$path" ]; then
+      [ "$print_paths" ] && echo "$path" || echo "$version"
+    fi
+  done
+}
+
+LTENV_COMMAND="$1"
+if [ -z "$LTENV_COMMAND" ]; then
+  ltenv-help --usage whence >&2
+  exit 1
+fi
+
+result="$(whence "$LTENV_COMMAND")"
+[ -n "$result" ] && echo "$result"

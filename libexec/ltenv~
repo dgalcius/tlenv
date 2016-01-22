@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+set -e
+
+export -n CDPATH
+
+if [ "$1" = "--debug" ]; then
+  export LTENV_DEBUG=1
+  shift
+fi
+
+if [ -n "$LTENV_DEBUG" ]; then
+  export PS4='+ [${BASH_SOURCE##*/}:${LINENO}] '
+  set -x
+fi
+
+abort() {
+  { if [ "$#" -eq 0 ]; then cat -
+    else echo "ltenv: $*"
+    fi
+  } >&2
+  exit 1
+}
+
+if enable -f "${BASH_SOURCE%/*}"/../libexec/ltenv-realpath.dylib realpath 2>/dev/null; then
+  abs_dirname() {
+    local path="$(realpath "$1")"
+    echo "${path%/*}"
+  }
+else
+  [ -z "$LTENV_NATIVE_EXT" ] || abort "failed to load \`realpath' builtin"
+
+  READLINK=$(type -p greadlink readlink | head -1)
+  [ -n "$READLINK" ] || abort "cannot find readlink - are you missing GNU coreutils?"
+
+  resolve_link() {
+    $READLINK "$1"
+  }
+
+  abs_dirname() {
+    local cwd="$PWD"
+    local path="$1"
+
+    while [ -n "$path" ]; do
+      cd "${path%/*}"
+      local name="${path##*/}"
+      path="$(resolve_link "$name" || true)"
+    done
+
+    pwd
+    cd "$cwd"
+  }
+fi
+
+if [ -z "${LTENV_ROOT}" ]; then
+  LTENV_ROOT="${HOME}/.ltenv"
+else
+  LTENV_ROOT="${LTENV_ROOT%/}"
+fi
+export LTENV_ROOT
+
+if [ -z "${LTENV_DIR}" ]; then
+  LTENV_DIR="$PWD"
+else
+  cd "$LTENV_DIR" 2>/dev/null || abort "cannot change working directory to \`$LTENV_DIR'"
+  LTENV_DIR="$PWD"
+  cd "$OLDPWD"
+fi
+export LTENV_DIR
+
+
+shopt -s nullglob
+
+bin_path="$(abs_dirname "$0")"
+for plugin_bin in "${LTENV_ROOT}/plugins/"*/bin; do
+  PATH="${plugin_bin}:${PATH}"
+done
+export PATH="${bin_path}:${PATH}"
+
+LTENV_HOOK_PATH="${LTENV_HOOK_PATH}:${LTENV_ROOT}/ltenv.d"
+if [ "${bin_path%/*}" != "$LTENV_ROOT" ]; then
+  # Add ltenv's own `ltenv.d` unless ltenv was cloned to LTENV_ROOT
+  LTENV_HOOK_PATH="${LTENV_HOOK_PATH}:${bin_path%/*}/ltenv.d"
+fi
+LTENV_HOOK_PATH="${LTENV_HOOK_PATH}:/usr/local/etc/ltenv.d:/etc/ltenv.d:/usr/lib/ltenv/hooks"
+for plugin_hook in "${LTENV_ROOT}/plugins/"*/etc/ltenv.d; do
+  LTENV_HOOK_PATH="${LTENV_HOOK_PATH}:${plugin_hook}"
+done
+export LTENV_HOOK_PATH
+
+shopt -u nullglob
+
+
+command="$1"
+case "$command" in
+"" )
+  { ltenv---version
+    ltenv-help
+  } | abort
+  ;;
+-v | --version )
+  exec ltenv---version
+  ;;
+-h | --help )
+  exec ltenv-help
+  ;;
+* )
+  command_path="$(command -v "ltenv-$command" || true)"
+  [ -n "$command_path" ] || abort "no such command \`$command'"
+
+  shift 1
+  if [ "$1" = --help ]; then
+    exec ltenv-help "$command"
+  else
+    exec "$command_path" "$@"
+  fi
+  ;;
+esac

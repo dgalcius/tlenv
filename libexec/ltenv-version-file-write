@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Usage: ltenv version-file-write <file> <version>
+
+set -e
+[ -n "$LTENV_DEBUG" ] && set -x
+
+LTENV_VERSION_FILE="$1"
+LTENV_VERSION="$2"
+
+if [ -z "$LTENV_VERSION" ] || [ -z "$LTENV_VERSION_FILE" ]; then
+  ltenv-help --usage version-file-write >&2
+  exit 1
+fi
+
+# Make sure the specified version is installed.
+ltenv-prefix "$LTENV_VERSION" >/dev/null
+
+# Write the version out to disk.
+echo "$LTENV_VERSION" > "$LTENV_VERSION_FILE"

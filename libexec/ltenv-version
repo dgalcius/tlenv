@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Summary: Show the current LaTeX version and its origin
+#
+# Shows the currently selected Ruby version and how it was
+# selected. To obtain only the version string, use `ltenv
+# version-name'.
+
+set -e
+[ -n "$LTENV_DEBUG" ] && set -x
+
+echo "$(ltenv-version-name) (set by $(ltenv-version-origin))"

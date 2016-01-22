@@ -1,0 +1,4 @@
+NAME        PATH                                      TEXMFCNF
+2015       /usr/local/texlive/2015/bin/x86_64-linux   /usr/local/texlive/2015/texmf-dist/web2c
+2010       /usr/local/texlive/2010/bin/x86_64-linux   /usr/local/texlive/2010/texmf-dist/web2c
+vtex-2010  /usr/local/texlive/2010/bin/x86_64-linux   /usr/local/texlive/2010/texmf-vtex/web2c
