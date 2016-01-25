@@ -1,9 +1,7 @@
-# Groom your app’s Ruby environment with rbenv.
+# TeXLive distro (LaTeX) selection with ltenv.
 
-Use rbenv to pick a Ruby version for your application and guarantee
-that your development environment matches production. Put rbenv to work
-with [Bundler](http://bundler.io/) for painless Ruby upgrades and
-bulletproof deployments.
+Use ltenv to set a LaTeX version for your application and guarantee
+that your development environment matches production.
 
 **Powerful in development.** Specify your app's Ruby version once,
   in a single file. Keep all your teammates on the same page. No
