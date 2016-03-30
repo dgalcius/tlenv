@@ -1,54 +1,53 @@
-# TeX Live distro (LaTeX) selection with ltenv.
+# TeX Live version selection with ltenv.
 
-Use ltenv to set a LaTeX version for your application and guarantee
+Use ltenv to set a TeX Live version for your application and guarantee
 that your development environment matches production.
 
-**Powerful in development.** Specify your LaTeX version once,
-  in a single file. Keep all your teammates on the same page.
-  Just Works™ from the command line.
-  Override the LaTeX version anytime: just set an environment variable.
+**Powerful in development.** Specify your TeX Live version once,
+  in a single file. Just Works™ from the command line.
+  Override the TeX Live version anytime: just set an environment variable.
 
 **Rock-solid in production.** 
-  The LaTeX version dependency lives in one place—your app—so upgrades
+  The TeX Live version dependency lives in one place—your app—so upgrades
   and rollbacks are  atomic, even when you switch versions.
 
-**One thing well.** ltenv is concerned solely with switching Ruby
+**One thing well.** ltenv is concerned solely with switching TeX Live
   versions. It's simple and predictable. (Can be used plugin ecosystem).
-  Specify LaTeX version as global or as local or as per folder basis.
+  Specify TeX Live version as global or as local or as per folder basis.
 
 ## Table of Contents
 
 * [How It Works](#how-it-works)
   * [Understanding PATH](#understanding-path)
   * [Understanding Shims](#understanding-shims)
-  * [Choosing the Ruby Version](#choosing-the-ruby-version)
-  * [Locating the Ruby Installation](#locating-the-ruby-installation)
+  * [Choosing the TeX Live Version](#choosing-the-texlive-version)
+  * [Locating the TeX live Installation](#locating-the-texlive-installation)
 * [Installation](#installation)
   * [Basic GitHub Checkout](#basic-github-checkout)
     * [Upgrading](#upgrading)
   * [Homebrew on Mac OS X](#homebrew-on-mac-os-x)
-  * [How rbenv hooks into your shell](#how-rbenv-hooks-into-your-shell)
-  * [Installing Ruby Versions](#installing-ruby-versions)
-  * [Uninstalling Ruby Versions](#uninstalling-ruby-versions)
-  * [Uninstalling rbenv](#uninstalling-rbenv)
+  * [How tlenv hooks into your shell](#how-rbenv-hooks-into-your-shell)
+  * [Installing TeX Live Versions](#installing-ruby-versions)
+  * [Uninstalling TeX Live Versions](#uninstalling-ruby-versions)
+  * [Uninstalling ltenv](#uninstalling-rbenv)
 * [Command Reference](#command-reference)
-  * [rbenv local](#rbenv-local)
-  * [rbenv global](#rbenv-global)
-  * [rbenv shell](#rbenv-shell)
-  * [rbenv versions](#rbenv-versions)
-  * [rbenv version](#rbenv-version)
-  * [rbenv rehash](#rbenv-rehash)
-  * [rbenv which](#rbenv-which)
-  * [rbenv whence](#rbenv-whence)
+  * [ltenv local](#rbenv-local)
+  * [ltenv global](#rbenv-global)
+  * [ltenv shell](#rbenv-shell)
+  * [ltenv versions](#rbenv-versions)
+  * [ltenv version](#rbenv-version)
+  * [ltenv rehash](#rbenv-rehash)
+  * [ltenv which](#rbenv-which)
+  * [ltenv whence](#rbenv-whence)
 * [Environment variables](#environment-variables)
 * [Development](#development)
 
 ## How It Works
 
-At a high level, ltenv intercepts LaTeX commands using shim
-executables injected into your `PATH`, determines which LaTeX version
+At a high level, ltenv intercepts TeX Live commands using shim
+executables injected into your `PATH`, determines which TeX Live version
 has been specified by your application, and passes your commands along
-to the correct LaTeX installation.
+to the correct TeX Live installation.
 
 ### Understanding PATH
 
@@ -74,7 +73,7 @@ ltenv works by inserting a directory of _shims_ at the front of your
 
 Through a process called _rehashing_, ltenv maintains shims in that
 directory to match every LaTeX command across every installed version
-of LaTeX—`latex`, `dvips`, `maketexlsr`, `purifyeps`, `xdvi`, and so on.
+of TeX Live — `latex`, `dvips`, `maketexlsr`, `purifyeps`, `xdvi`, and so on.
 
 Shims are lightweight executables that simply pass your command along
 to ltenv. So with ltenv installed, when you run, say, `latex`, your
@@ -85,9 +84,9 @@ operating system will do the following:
 * Run the shim named `latex`, which in turn passes the command along to
   ltenv
 
-### Choosing the LaTeX Version
+### Choosing the TeX Live version
 
-When you execute a shim, ltenv determines which LaTeX version to use by
+When you execute a shim, ltenv determines which TeX Live version to use by
 reading it from the following sources, in this order:
 
 1. The `LTENV_VERSION` environment variable, if specified. You can use
@@ -105,13 +104,13 @@ reading it from the following sources, in this order:
 
 4. The global `~/.tlenv/version` file. You can modify this file using
    the [`tlenv global`](#tlenv-global) command. If the global version
-   file is not present, rbenv assumes you want to use the "system"
-   LaTeX—i.e. whatever version would be run if rbenv weren't in your
+   file is not present, ltenv assumes you want to use the "system"
+   TeX Live — i.e. whatever version would be run if ltenv weren't in your
    path.
 
-### Locating the LaTeX Installation
+### Locating the TeX Live Installation
 
-Once ltenv has determined which version of LaTeX your application has
+Once ltenv has determined which version of TeX Live your application has
 specified, it passes the command along to the corresponding TeX Live
 installation.
 
