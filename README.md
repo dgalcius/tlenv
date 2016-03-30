@@ -1,33 +1,20 @@
-# TeXLive distro (LaTeX) selection with ltenv.
+# TeX Live distro (LaTeX) selection with ltenv.
 
 Use ltenv to set a LaTeX version for your application and guarantee
 that your development environment matches production.
 
-**Powerful in development.** Specify your app's Ruby version once,
-  in a single file. Keep all your teammates on the same page. No
-  headaches running apps on different versions of Ruby. Just Works™
-  from the command line and with app servers like [Pow](http://pow.cx).
-  Override the Ruby version anytime: just set an environment variable.
+**Powerful in development.** Specify your LaTeX version once,
+  in a single file. Keep all your teammates on the same page.
+  Just Works™ from the command line.
+  Override the LaTeX version anytime: just set an environment variable.
 
-**Rock-solid in production.** Your application's executables are its
-  interface with ops. With rbenv and [Bundler
-  binstubs](https://github.com/rbenv/rbenv/wiki/Understanding-binstubs)
-  you'll never again need to `cd` in a cron job or Chef recipe to
-  ensure you've selected the right runtime. The Ruby version
-  dependency lives in one place—your app—so upgrades and rollbacks are
-  atomic, even when you switch versions.
+**Rock-solid in production.** 
+  The LaTeX version dependency lives in one place—your app—so upgrades
+  and rollbacks are  atomic, even when you switch versions.
 
-**One thing well.** rbenv is concerned solely with switching Ruby
-  versions. It's simple and predictable. A rich plugin ecosystem lets
-  you tailor it to suit your needs. Compile your own Ruby versions, or
-  use the [ruby-build][]
-  plugin to automate the process. Specify per-application environment
-  variables with [rbenv-vars](https://github.com/rbenv/rbenv-vars).
-  See more [plugins on the
-  wiki](https://github.com/rbenv/rbenv/wiki/Plugins).
-
-[**Why choose rbenv over
-RVM?**](https://github.com/rbenv/rbenv/wiki/Why-rbenv%3F)
+**One thing well.** ltenv is concerned solely with switching Ruby
+  versions. It's simple and predictable. (Can be used plugin ecosystem).
+  Specify LaTeX version as global or as local or as per folder basis.
 
 ## Table of Contents
 
@@ -58,14 +45,14 @@ RVM?**](https://github.com/rbenv/rbenv/wiki/Why-rbenv%3F)
 
 ## How It Works
 
-At a high level, rbenv intercepts Ruby commands using shim
-executables injected into your `PATH`, determines which Ruby version
+At a high level, ltenv intercepts LaTeX commands using shim
+executables injected into your `PATH`, determines which LaTeX version
 has been specified by your application, and passes your commands along
-to the correct Ruby installation.
+to the correct LaTeX installation.
 
 ### Understanding PATH
 
-When you run a command like `ruby` or `rake`, your operating system
+When you run a command like `latex` or `dvips`, your operating system
 searches through a list of directories to find an executable file with
 that name. This list of directories lives in an environment variable
 called `PATH`, with each directory in the list separated by a colon:
@@ -80,55 +67,55 @@ then `/bin`.
 
 ### Understanding Shims
 
-rbenv works by inserting a directory of _shims_ at the front of your
+ltenv works by inserting a directory of _shims_ at the front of your
 `PATH`:
 
-    ~/.rbenv/shims:/usr/local/bin:/usr/bin:/bin
+    ~/.ltenv/shims:/usr/local/bin:/usr/bin:/bin
 
-Through a process called _rehashing_, rbenv maintains shims in that
-directory to match every Ruby command across every installed version
-of Ruby—`irb`, `gem`, `rake`, `rails`, `ruby`, and so on.
+Through a process called _rehashing_, ltenv maintains shims in that
+directory to match every LaTeX command across every installed version
+of LaTeX—`latex`, `dvips`, `maketexlsr`, `purifyeps`, `xdvi`, and so on.
 
 Shims are lightweight executables that simply pass your command along
-to rbenv. So with rbenv installed, when you run, say, `rake`, your
+to ltenv. So with ltenv installed, when you run, say, `latex`, your
 operating system will do the following:
 
-* Search your `PATH` for an executable file named `rake`
-* Find the rbenv shim named `rake` at the beginning of your `PATH`
-* Run the shim named `rake`, which in turn passes the command along to
-  rbenv
+* Search your `PATH` for an executable file named `latex`
+* Find the ltenv shim named `latex` at the beginning of your `PATH`
+* Run the shim named `latex`, which in turn passes the command along to
+  ltenv
 
-### Choosing the Ruby Version
+### Choosing the LaTeX Version
 
-When you execute a shim, rbenv determines which Ruby version to use by
+When you execute a shim, ltenv determines which LaTeX version to use by
 reading it from the following sources, in this order:
 
-1. The `RBENV_VERSION` environment variable, if specified. You can use
-   the [`rbenv shell`](#rbenv-shell) command to set this environment
+1. The `LTENV_VERSION` environment variable, if specified. You can use
+   the [`ltenv shell`](#ltenv-shell) command to set this environment
    variable in your current shell session.
 
-2. The first `.ruby-version` file found by searching the directory of the
+2. The first `.latex-version` file found by searching the directory of the
    script you are executing and each of its parent directories until reaching
    the root of your filesystem.
 
-3. The first `.ruby-version` file found by searching the current working
+3. The first `.latex-version` file found by searching the current working
    directory and each of its parent directories until reaching the root of your
-   filesystem. You can modify the `.ruby-version` file in the current working
-   directory with the [`rbenv local`](#rbenv-local) command.
+   filesystem. You can modify the `.latex-version` file in the current working
+   directory with the [`tlenv local`](#tlenv-local) command.
 
-4. The global `~/.rbenv/version` file. You can modify this file using
-   the [`rbenv global`](#rbenv-global) command. If the global version
+4. The global `~/.tlenv/version` file. You can modify this file using
+   the [`tlenv global`](#tlenv-global) command. If the global version
    file is not present, rbenv assumes you want to use the "system"
-   Ruby—i.e. whatever version would be run if rbenv weren't in your
+   LaTeX—i.e. whatever version would be run if rbenv weren't in your
    path.
 
-### Locating the Ruby Installation
+### Locating the LaTeX Installation
 
-Once rbenv has determined which version of Ruby your application has
-specified, it passes the command along to the corresponding Ruby
+Once ltenv has determined which version of LaTeX your application has
+specified, it passes the command along to the corresponding TeX Live
 installation.
 
-Each Ruby version is installed into its own directory under
+Each TeX Live version is installed into its own directory under
 `~/.rbenv/versions`. For example, you might have these versions
 installed:
 
@@ -140,10 +127,6 @@ Version names to rbenv are simply the names of the directories in
 `~/.rbenv/versions`.
 
 ## Installation
-
-**Compatibility note**: rbenv is _incompatible_ with RVM. Please make
-  sure to fully uninstall RVM and remove any references to it from
-  your shell initialization files before installing rbenv.
 
 If you're on Mac OS X, consider
 [installing with Homebrew](#homebrew-on-mac-os-x).
