@@ -85,9 +85,11 @@ list_executable_names() {
   ltenv-versions --bare --skip-aliases | \
   while read version; do
      s_bin_path=`grep "^${version} " $LTENV_VERSIONS_FILE | awk '{ print $2 }'`
-    for file in "${s_bin_path}/"*; do
-      echo "${file##*/}"
-    done
+     for file in "${s_bin_path}/"*; do
+         if [[ -f ${file} ]]; then
+             echo "${file##*/}"
+         fi
+      done
   done
 }
 
@@ -98,7 +100,7 @@ make_shims() {
   local file shim
   for file; do
     shim="${file##*/}"
-    register_shim "$shim"
+        register_shim "$shim"
   done
 }
 
