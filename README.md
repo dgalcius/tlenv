@@ -25,7 +25,6 @@ that your development environment matches production.
 * [Installation](#installation)
   * [Basic GitHub Checkout](#basic-github-checkout)
     * [Upgrading](#upgrading)
-  * [Homebrew on Mac OS X](#homebrew-on-mac-os-x)
   * [How tlenv hooks into your shell](#how-ltenv-hooks-into-your-shell)
   * [Installing TeXLive Versions](#installing-latex-versions)
   * [Uninstalling TeXLive Versions](#uninstalling-latex-versions)
@@ -116,10 +115,7 @@ installation.
 
 ## Installation
 
-If you're on Mac OS X, consider
-[installing with Homebrew](#homebrew-on-mac-os-x).
-
-### Basic GitHub Checkout
+### Basic GitLab Checkout
 
 This will get you going with the latest version of ltenv and make it
 easy to fork and contribute any changes back upstream.
