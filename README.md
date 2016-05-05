@@ -175,37 +175,14 @@ $ git fetch
 $ git checkout v0.3.0
 ~~~
 
-If you've [installed via Homebrew](#homebrew-on-mac-os-x), then upgrade
-via its `brew` command:
-
-~~~ sh
-$ brew update
-$ brew upgrade rbenv ruby-build
-~~~
-
-### Homebrew on Mac OS X
-
-As an alternative to installation via GitHub checkout, you can install
-rbenv and [ruby-build][] using the [Homebrew](http://brew.sh) package
-manager on Mac OS X:
-
-~~~
-$ brew update
-$ brew install rbenv ruby-build
-~~~
-
-Afterwards you'll still need to add `eval "$(ltenv init -)"` to your
-profile as stated in the caveats. You'll only ever have to do this
-once.
-
-### How rbenv hooks into your shell
+### How ltenv hooks into your shell
 
 Skip this section unless you must know what every line in your shell
 profile is doing.
 
 `ltenv init` is the only command that crosses the line of loading
-extra commands into your shell. Coming from RVM, some of you might be
-opposed to this idea. Here's what `ltenv init` actually does:
+extra commands into your shell.
+Here's what `ltenv init` actually does:
 
 1. Sets up your shims path. This is the only requirement for ltenv to
    function properly. You can do this by hand by prepending
@@ -221,195 +198,156 @@ opposed to this idea. Here's what `ltenv init` actually does:
    date. You can always run `ltenv rehash` manually.
 
 4. Installs the sh dispatcher. This bit is also optional, but allows
-   rbenv and plugins to change variables in your current shell, making
-   commands like `rbenv shell` possible. The sh dispatcher doesn't do
+   ltenv and plugins to change variables in your current shell, making
+   commands like `ltenv shell` possible. The sh dispatcher doesn't do
    anything crazy like override `cd` or hack your shell prompt, but if
-   for some reason you need `rbenv` to be a real script rather than a
+   for some reason you need `ltenv` to be a real script rather than a
    shell function, you can safely skip it.
 
 Run `ltenv init -` for yourself to see exactly what happens under the
 hood.
 
-### Installing Ruby Versions
+### Installing TeXLive Versions
 
-The `rbenv install` command doesn't ship with rbenv out of the box, but
-is provided by the [ruby-build][] project. If you installed it either
-as part of GitHub checkout process outlined above or via Homebrew, you
-should be able to:
+The `ltenv install` command doesn't ship with ltenv out of the box yet.
 
-~~~ sh
-# list all available versions:
-$ rbenv install -l
+### Uninstalling TeXLive Versions
 
-# install a Ruby version:
-$ rbenv install 2.0.0-p247
-~~~
+### Uninstalling ltenv
 
-Alternatively to the `install` command, you can download and compile
-Ruby manually as a subdirectory of `~/.rbenv/versions/`. An entry in
-that directory can also be a symlink to a Ruby version installed
-elsewhere on the filesystem. rbenv doesn't care; it will simply treat
-any entry in the `versions/` directory as a separate Ruby version.
-
-### Uninstalling Ruby Versions
-
-As time goes on, Ruby versions you install will accumulate in your
-`~/.rbenv/versions` directory.
-
-To remove old Ruby versions, simply `rm -rf` the directory of the
-version you want to remove. You can find the directory of a particular
-Ruby version with the `rbenv prefix` command, e.g. `rbenv prefix
-1.8.7-p357`.
-
-The [ruby-build][] plugin provides an `rbenv uninstall` command to
-automate the removal process.
-
-### Uninstalling rbenv
-
-The simplicity of rbenv makes it easy to temporarily disable it, or
+The simplicity of ltenv makes it easy to temporarily disable it, or
 uninstall from the system.
 
-1. To **disable** rbenv managing your Ruby versions, simply remove the
-  `rbenv init` line from your shell startup configuration. This will
-  remove rbenv shims directory from PATH, and future invocations like
-  `ruby` will execute the system Ruby version, as before rbenv.
+1. To **disable** ltenv managing your TeXlive versions, simply remove the
+  `ltenv init` line from your shell startup configuration. This will
+  remove ltenv shims directory from PATH, and future invocations like
+  `latex` will execute the system latex version, as before ltenv.
 
-  `rbenv` will still be accessible on the command line, but your Ruby
+  `ltenv` will still be accessible on the command line, but your TeXLive
   apps won't be affected by version switching.
 
-2. To completely **uninstall** rbenv, perform step (1) and then remove
-   its root directory. This will **delete all Ruby versions** that were
-   installed under `` `rbenv root`/versions/ `` directory:
+2. To completely **uninstall** ltenv, perform step (1) and then remove
+   its root directory. 
 
-        rm -rf `rbenv root`
-
-   If you've installed rbenv using a package manager, as a final step
-   perform the rbenv package removal. For instance, for Homebrew:
-
-        brew uninstall rbenv
+        rm -rf `ltenv root`
 
 ## Command Reference
 
-Like `git`, the `rbenv` command delegates to subcommands based on its
+Like `git`, the `ktenv` command delegates to subcommands based on its
 first argument. The most common subcommands are:
 
-### rbenv local
+### ltenv local
 
-Sets a local application-specific Ruby version by writing the version
-name to a `.ruby-version` file in the current directory. This version
+Sets a local application-specific LaTeX version by writing the version
+name to a `.latex-version` file in the current directory. This version
 overrides the global version, and can be overridden itself by setting
-the `RBENV_VERSION` environment variable or with the `rbenv shell`
+the `LTENV_VERSION` environment variable or with the `ltenv shell`
 command.
 
-    $ rbenv local 1.9.3-p327
+    $ ltenv local 2016
 
-When run without a version number, `rbenv local` reports the currently
+When run without a version number, `ltenv local` reports the currently
 configured local version. You can also unset the local version:
 
-    $ rbenv local --unset
+    $ ltenv local --unset
 
-Previous versions of rbenv stored local version specifications in a
-file named `.rbenv-version`. For backwards compatibility, rbenv will
-read a local version specified in an `.rbenv-version` file, but a
-`.ruby-version` file in the same directory will take precedence.
+ltenv stores local version specifications in a file named `.latex-version`.
 
-### rbenv global
+### ltenv global
 
-Sets the global version of Ruby to be used in all shells by writing
-the version name to the `~/.rbenv/version` file. This version can be
-overridden by an application-specific `.ruby-version` file, or by
-setting the `RBENV_VERSION` environment variable.
+Sets the global version of TeXLive to be used in all shells by writing
+the version name to the `~/.ltenv/version` file. This version can be
+overridden by an application-specific `.latex-version` file, or by
+setting the `LTENV_VERSION` environment variable.
 
-    $ rbenv global 1.8.7-p352
+    $ ltenv global vtex-2010
 
-The special version name `system` tells rbenv to use the system Ruby
+The special version name `system` tells ltenv to use the system TeXLive
 (detected by searching your `$PATH`).
 
-When run without a version number, `rbenv global` reports the
+When run without a version number, `ltenv global` reports the
 currently configured global version.
 
-### rbenv shell
+### ltenv shell
 
-Sets a shell-specific Ruby version by setting the `RBENV_VERSION`
+Sets a shell-specific TeXLive version by setting the `LTENV_VERSION`
 environment variable in your shell. This version overrides
 application-specific versions and the global version.
 
-    $ rbenv shell jruby-1.7.1
+    $ ltenv shell devel-2015
 
-When run without a version number, `rbenv shell` reports the current
-value of `RBENV_VERSION`. You can also unset the shell version:
+When run without a version number, `ltenv shell` reports the current
+value of `LTENV_VERSION`. You can also unset the shell version:
 
-    $ rbenv shell --unset
+    $ ltenv shell --unset
 
-Note that you'll need rbenv's shell integration enabled (step 3 of
+Note that you'll need ltenv's shell integration enabled (step 3 of
 the installation instructions) in order to use this command. If you
 prefer not to use shell integration, you may simply set the
-`RBENV_VERSION` variable yourself:
+`LTENV_VERSION` variable yourself:
 
-    $ export RBENV_VERSION=jruby-1.7.1
+    $ export LTENV_VERSION=vtex-2010
 
-### rbenv versions
+### ltenv versions
 
-Lists all Ruby versions known to rbenv, and shows an asterisk next to
+Lists all TeXLive versions known to ltenv, and shows an asterisk next to
 the currently active version.
 
-    $ rbenv versions
-      1.8.7-p352
-      1.9.2-p290
-    * 1.9.3-p327 (set by /Users/sam/.rbenv/version)
-      jruby-1.7.1
-      rbx-1.2.4
-      ree-1.8.7-2011.03
+    $ ltenv versions
+      system
+      2016
+    * vtex-2010 (set by /Users/sam/.ltenv/version)
+      vtex-2016
+      devel-2016
 
-### rbenv version
+### ltenv version
 
-Displays the currently active Ruby version, along with information on
+Displays the currently active TeXLive version, along with information on
 how it was set.
 
-    $ rbenv version
-    1.9.3-p327 (set by /Users/sam/.rbenv/version)
+    $ ltenv version
+    1.9.3-p327 (set by /Users/sam/.ltenv/version)
 
-### rbenv rehash
+### ltenv rehash
 
-Installs shims for all Ruby executables known to rbenv (i.e.,
-`~/.rbenv/versions/*/bin/*`). Run this command after you install a new
-version of Ruby, or install a gem that provides commands.
+Installs shims for all TeXLive executables known to ltenv (i.e.,
+`/usr/local/texlive/*/*/bin/*`). Run this command after you install a new
+version of TeXLive.
 
-    $ rbenv rehash
+    $ ltenv rehash
 
-### rbenv which
+### ltenv which
 
-Displays the full path to the executable that rbenv will invoke when
+Displays the full path to the executable that ltenv will invoke when
 you run the given command.
 
-    $ rbenv which irb
-    /Users/sam/.rbenv/versions/1.9.3-p327/bin/irb
+    $ ltenv which dvips
+    /usr/local/texlive/2015/bin/x86_64-linux
 
-### rbenv whence
+### ltenv whence
 
-Lists all Ruby versions with the given command installed.
+Lists all TeXLive versions with the given command installed.
 
-    $ rbenv whence rackup
-    1.9.3-p327
-    jruby-1.7.1
-    ree-1.8.7-2011.03
+    $ ltenv whence dviasm
+    2015
+    vtex-2015
 
 ## Environment variables
 
-You can affect how rbenv operates with the following settings:
+You can affect how ltenv operates with the following settings:
 
 name | default | description
 -----|---------|------------
-`RBENV_VERSION` | | Specifies the Ruby version to be used.<br>Also see [`rbenv shell`](#rbenv-shell)
-`RBENV_ROOT` | `~/.rbenv` | Defines the directory under which Ruby versions and shims reside.<br>Also see `rbenv root`
-`RBENV_DEBUG` | | Outputs debug information.<br>Also as: `rbenv --debug <subcommand>`
-`RBENV_HOOK_PATH` | [_see wiki_][hooks] | Colon-separated list of paths searched for rbenv hooks.
-`RBENV_DIR` | `$PWD` | Directory to start searching for `.ruby-version` files.
+`LTENV_VERSION` | | Specifies the TeXLive version to be used.<br>Also see [`ltenv shell`](#ltenv-shell)
+`LTENV_ROOT` | `~/.ltenv` | Defines the directory under which TeXLive versions and shims reside.<br>Also see `ltenv root`
+`LTENV_DEBUG` | | Outputs debug information.<br>Also as: `ltenv --debug <subcommand>`
+`LTENV_HOOK_PATH` | [_see wiki_][hooks] | Colon-separated list of paths searched for ltenv hooks.
+`LTENV_DIR` | `$PWD` | Directory to start searching for `.latex-version` files.
 
 ## Development
 
-The rbenv source code is [hosted on
-GitHub](https://github.com/rbenv/rbenv). It's clean, modular,
+The ltenv source code is [hosted on
+GitLab](https://gitlab.vtex.lt/deimi/ltenv). It's clean, modular,
 and easy to understand, even if you're not a shell hacker.
 
 Tests are executed using [Bats](https://github.com/sstephenson/bats):
@@ -418,7 +356,7 @@ Tests are executed using [Bats](https://github.com/sstephenson/bats):
     $ bats test/<file>.bats
 
 Please feel free to submit pull requests and file bugs on the [issue
-tracker](https://github.com/rbenv/rbenv/issues).
+tracker](https://gitlab.vtex.lt/deimi/ltenv/issues).
 
 
   [ruby-build]: https://github.com/rbenv/ruby-build#readme
