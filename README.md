@@ -114,17 +114,6 @@ Once ltenv has determined which version of TeX Live your application has
 specified, it passes the command along to the corresponding TeX Live
 installation.
 
-Each TeX Live version is installed into its own directory under
-`~/.rbenv/versions`. For example, you might have these versions
-installed:
-
-* `~/.rbenv/versions/1.8.7-p371/`
-* `~/.rbenv/versions/1.9.3-p327/`
-* `~/.rbenv/versions/jruby-1.7.1/`
-
-Version names to rbenv are simply the names of the directories in
-`~/.rbenv/versions`.
-
 ## Installation
 
 If you're on Mac OS X, consider
@@ -135,17 +124,17 @@ If you're on Mac OS X, consider
 This will get you going with the latest version of rbenv and make it
 easy to fork and contribute any changes back upstream.
 
-1. Check out rbenv into `~/.rbenv`.
+1. Check out rbenv into `~/.ltenv`.
 
     ~~~ sh
-    $ git clone https://github.com/rbenv/rbenv.git ~/.rbenv
+    $ git clone https://gitlab.vtex.lt/deimi/ltenv ~/.ltenv
     ~~~
 
-2. Add `~/.rbenv/bin` to your `$PATH` for access to the `rbenv`
+2. Add `~/.ltenv/bin` to your `$PATH` for access to the `ltenv`
    command-line utility.
 
     ~~~ sh
-    $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+    $ echo 'export PATH="$HOME/.ltenv/bin:$PATH"' >> ~/.bash_profile
     ~~~
 
     **Ubuntu Desktop note**: Modify your `~/.bashrc` instead of `~/.bash_profile`.
@@ -155,7 +144,7 @@ easy to fork and contribute any changes back upstream.
 3. Add `rbenv init` to your shell to enable shims and autocompletion.
 
     ~~~ sh
-    $ echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+    $ echo 'eval "$(ltenv init -)"' >> ~/.bash_profile
     ~~~
 
     _Same as in previous step, use `~/.bashrc` on Ubuntu, or `~/.zshrc` for Zsh._
@@ -164,28 +153,24 @@ easy to fork and contribute any changes back upstream.
    terminal tab will usually do it.) Now check if rbenv was set up:
 
     ~~~ sh
-    $ type rbenv
+    $ type ltenv
     #=> "rbenv is a function"
     ~~~
 
-5. _(Optional)_ Install [ruby-build][], which provides the
-   `rbenv install` command that simplifies the process of
-   [installing new Ruby versions](#installing-ruby-versions).
-
 #### Upgrading
 
-If you've installed rbenv manually using git, you can upgrade your
+If you've installed ltenv manually using git, you can upgrade your
 installation to the cutting-edge version at any time.
 
 ~~~ sh
-$ cd ~/.rbenv
+$ cd ~/.ltenv
 $ git pull
 ~~~
 
-To use a specific release of rbenv, check out the corresponding tag:
+To use a specific release of ltenv, check out the corresponding tag:
 
 ~~~ sh
-$ cd ~/.rbenv
+$ cd ~/.ltenv
 $ git fetch
 $ git checkout v0.3.0
 ~~~
@@ -209,7 +194,7 @@ $ brew update
 $ brew install rbenv ruby-build
 ~~~
 
-Afterwards you'll still need to add `eval "$(rbenv init -)"` to your
+Afterwards you'll still need to add `eval "$(ltenv init -)"` to your
 profile as stated in the caveats. You'll only ever have to do this
 once.
 
@@ -218,22 +203,22 @@ once.
 Skip this section unless you must know what every line in your shell
 profile is doing.
 
-`rbenv init` is the only command that crosses the line of loading
+`ltenv init` is the only command that crosses the line of loading
 extra commands into your shell. Coming from RVM, some of you might be
-opposed to this idea. Here's what `rbenv init` actually does:
+opposed to this idea. Here's what `ltenv init` actually does:
 
 1. Sets up your shims path. This is the only requirement for rbenv to
    function properly. You can do this by hand by prepending
-   `~/.rbenv/shims` to your `$PATH`.
+   `~/.ltenv/shims` to your `$PATH`.
 
 2. Installs autocompletion. This is entirely optional but pretty
-   useful. Sourcing `~/.rbenv/completions/rbenv.bash` will set that
-   up. There is also a `~/.rbenv/completions/rbenv.zsh` for Zsh
+   useful. Sourcing `~/.ltenv/completions/ltenv.bash` will set that
+   up. There is also a `~/.ltenv/completions/ltenv.zsh` for Zsh
    users.
 
 3. Rehashes shims. From time to time you'll need to rebuild your
    shim files. Doing this automatically makes sure everything is up to
-   date. You can always run `rbenv rehash` manually.
+   date. You can always run `ltenv rehash` manually.
 
 4. Installs the sh dispatcher. This bit is also optional, but allows
    rbenv and plugins to change variables in your current shell, making
@@ -242,7 +227,7 @@ opposed to this idea. Here's what `rbenv init` actually does:
    for some reason you need `rbenv` to be a real script rather than a
    shell function, you can safely skip it.
 
-Run `rbenv init -` for yourself to see exactly what happens under the
+Run `ltenv init -` for yourself to see exactly what happens under the
 hood.
 
 ### Installing Ruby Versions
