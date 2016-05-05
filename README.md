@@ -1,4 +1,4 @@
-# TeX Live version selection with ltenv.
+# TeXLive version selection with ltenv.
 
 Use ltenv to set a TeX Live version for your application and guarantee
 that your development environment matches production.
