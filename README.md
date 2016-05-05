@@ -121,10 +121,10 @@ If you're on Mac OS X, consider
 
 ### Basic GitHub Checkout
 
-This will get you going with the latest version of rbenv and make it
+This will get you going with the latest version of ltenv and make it
 easy to fork and contribute any changes back upstream.
 
-1. Check out rbenv into `~/.ltenv`.
+1. Check out ltenv into `~/.ltenv`.
 
     ~~~ sh
     $ git clone https://gitlab.vtex.lt/deimi/ltenv ~/.ltenv
@@ -141,7 +141,7 @@ easy to fork and contribute any changes back upstream.
 
     **Zsh note**: Modify your `~/.zshrc` file instead of `~/.bash_profile`.
 
-3. Add `rbenv init` to your shell to enable shims and autocompletion.
+3. Add `ltenv init` to your shell to enable shims and autocompletion.
 
     ~~~ sh
     $ echo 'eval "$(ltenv init -)"' >> ~/.bash_profile
@@ -150,11 +150,11 @@ easy to fork and contribute any changes back upstream.
     _Same as in previous step, use `~/.bashrc` on Ubuntu, or `~/.zshrc` for Zsh._
 
 4. Restart your shell so that PATH changes take effect. (Opening a new
-   terminal tab will usually do it.) Now check if rbenv was set up:
+   terminal tab will usually do it.) Now check if ltenv was set up:
 
     ~~~ sh
     $ type ltenv
-    #=> "rbenv is a function"
+    #=> "ltenv is a function"
     ~~~
 
 #### Upgrading
@@ -207,7 +207,7 @@ profile is doing.
 extra commands into your shell. Coming from RVM, some of you might be
 opposed to this idea. Here's what `ltenv init` actually does:
 
-1. Sets up your shims path. This is the only requirement for rbenv to
+1. Sets up your shims path. This is the only requirement for ltenv to
    function properly. You can do this by hand by prepending
    `~/.ltenv/shims` to your `$PATH`.
 
