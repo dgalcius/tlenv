@@ -1,6 +1,6 @@
-# TeXLive version selection with ltenv.
+# TeX Live version selection with tlenv.
 
-Use ltenv to set a TeX Live version for your application and guarantee
+Use tlenv to set a TeX Live version for your document or application and guarantee
 that your development environment matches production.
 
 **Powerful in development.** Specify your TeX Live version once,
@@ -8,10 +8,10 @@ that your development environment matches production.
   Override the TeX Live version anytime: just set an environment variable.
 
 **Rock-solid in production.** 
-  The TeX Live version dependency lives in one place—your app—so upgrades
+  The TeX Live version dependency lives in one place—your doc/app—so upgrades
   and rollbacks are  atomic, even when you switch versions.
 
-**One thing well.** ltenv is concerned solely with switching TeX Live
+**One thing well.** tlenv is concerned solely with switching TeX Live
   versions. It's simple and predictable. (Can be used plugin ecosystem).
   Specify TeX Live version as global or as local or as per folder basis.
 
@@ -20,32 +20,32 @@ that your development environment matches production.
 * [How It Works](#how-it-works)
   * [Understanding PATH](#understanding-path)
   * [Understanding Shims](#understanding-shims)
-  * [Choosing the TeXLive Version](#choosing-the-texlive-version)
-  * [Locating the TeXLive Installation](#locating-the-texlive-installation)
+  * [Choosing the TeX Live Version](#choosing-the-texlive-version)
+  * [Locating the TeX Live Installation](#locating-the-texlive-installation)
 * [Installation](#installation)
   * [Basic GitHub Checkout](#basic-github-checkout)
     * [Upgrading](#upgrading)
-  * [How tlenv hooks into your shell](#how-ltenv-hooks-into-your-shell)
-  * [Installing TeXLive Versions](#installing-latex-versions)
-  * [Uninstalling TeXLive Versions](#uninstalling-latex-versions)
-  * [Uninstalling ltenv](#uninstalling-ltenv)
+  * [How tlenv hooks into your shell](#how-tlenv-hooks-into-your-shell)
+  * [Installing TeX Live Versions](#installing-latex-versions)
+  * [Uninstalling TeX Live Versions](#uninstalling-latex-versions)
+  * [Uninstalling tlenv](#uninstalling-tlenv)
 * [Command Reference](#command-reference)
-  * [ltenv local](#ltenv-local)
-  * [ltenv global](#ltenv-global)
-  * [ltenv shell](#ltenv-shell)
-  * [ltenv versions](#ltenv-versions)
-  * [ltenv version](#ltenv-version)
-  * [ltenv rehash](#ltenv-rehash)
-  * [ltenv which](#ltenv-which)
-  * [ltenv whence](#ltenv-whence)
+  * [tlenv local](#tlenv-local)
+  * [tlenv global](#tlenv-global)
+  * [tlenv shell](#tlenv-shell)
+  * [tlenv versions](#tlenv-versions)
+  * [tlenv version](#tlenv-version)
+  * [tlenv rehash](#tlenv-rehash)
+  * [tlenv which](#tlenv-which)
+  * [tlenv whence](#tlenv-whence)
 * [Environment variables](#environment-variables)
 * [Development](#development)
 
 ## How It Works
 
-At a high level, ltenv intercepts TeX Live commands using shim
+At a high level, tlenv intercepts TeX Live commands using shim
 executables injected into your `PATH`, determines which TeX Live version
-has been specified by your application, and passes your commands along
+has been specified by your document/application, and passes your commands along
 to the correct TeX Live installation.
 
 ### Understanding PATH
@@ -65,31 +65,31 @@ then `/bin`.
 
 ### Understanding Shims
 
-ltenv works by inserting a directory of _shims_ at the front of your
+tlenv works by inserting a directory of _shims_ at the front of your
 `PATH`:
 
-    ~/.ltenv/shims:/usr/local/bin:/usr/bin:/bin
+    ~/.tlenv/shims:/usr/local/bin:/usr/bin:/bin
 
-Through a process called _rehashing_, ltenv maintains shims in that
+Through a process called _rehashing_, tlenv maintains shims in that
 directory to match every LaTeX command across every installed version
 of TeX Live — `latex`, `dvips`, `maketexlsr`, `purifyeps`, `xdvi`, and so on.
 
 Shims are lightweight executables that simply pass your command along
-to ltenv. So with ltenv installed, when you run, say, `latex`, your
+to tlenv. So with tlenv installed, when you run, say, `latex`, your
 operating system will do the following:
 
 * Search your `PATH` for an executable file named `latex`
-* Find the ltenv shim named `latex` at the beginning of your `PATH`
+* Find the tlenv shim named `latex` at the beginning of your `PATH`
 * Run the shim named `latex`, which in turn passes the command along to
-  ltenv
+  tlenv
 
 ### Choosing the TeX Live version
 
-When you execute a shim, ltenv determines which TeX Live version to use by
+When you execute a shim, tlenv determines which TeX Live version to use by
 reading it from the following sources, in this order:
 
-1. The `LTENV_VERSION` environment variable, if specified. You can use
-   the [`ltenv shell`](#ltenv-shell) command to set this environment
+1. The `TLENV_VERSION` environment variable, if specified. You can use
+   the [`tlenv shell`](#tlenv-shell) command to set this environment
    variable in your current shell session.
 
 2. The first `.latex-version` file found by searching the directory of the
@@ -103,13 +103,13 @@ reading it from the following sources, in this order:
 
 4. The global `~/.tlenv/version` file. You can modify this file using
    the [`tlenv global`](#tlenv-global) command. If the global version
-   file is not present, ltenv assumes you want to use the "system"
-   TeX Live — i.e. whatever version would be run if ltenv weren't in your
+   file is not present, tlenv assumes you want to use the "system"
+   TeX Live — i.e. whatever version would be run if tlenv weren't in your
    path.
 
 ### Locating the TeX Live Installation
 
-Once ltenv has determined which version of TeX Live your application has
+Once tlenv has determined which version of TeX Live your application has
 specified, it passes the command along to the corresponding TeX Live
 installation.
 
@@ -117,233 +117,233 @@ installation.
 
 ### Basic GitLab Checkout
 
-This will get you going with the latest version of ltenv and make it
+This will get you going with the latest version of tlenv and make it
 easy to fork and contribute any changes back upstream.
 
-1. Check out ltenv into `~/.ltenv`.
+1. Check out tlenv into `~/.tlenv`.
 
     ~~~ sh
-    $ git clone https://gitlab.vtex.lt/deimi/ltenv ~/.ltenv
+    $ git clone https://gitlab.vtex.lt/deimi/tlenv ~/.tlenv
     ~~~
 
-2. Add `~/.ltenv/bin` to your `$PATH` for access to the `ltenv`
+2. Add `~/.tlenv/bin` to your `$PATH` for access to the `tlenv`
    command-line utility.
 
     ~~~ sh
-    $ echo 'export PATH="$HOME/.ltenv/bin:$PATH"' >> ~/.bash_profile
+    $ echo 'export PATH="$HOME/.tlenv/bin:$PATH"' >> ~/.bash_profile
     ~~~
 
     **Ubuntu Desktop note**: Modify your `~/.bashrc` instead of `~/.bash_profile`.
 
     **Zsh note**: Modify your `~/.zshrc` file instead of `~/.bash_profile`.
 
-3. Add `ltenv init` to your shell to enable shims and autocompletion.
+3. Add `tlenv init` to your shell to enable shims and autocompletion.
 
     ~~~ sh
-    $ echo 'eval "$(ltenv init -)"' >> ~/.bash_profile
+    $ echo 'eval "$(tlenv init -)"' >> ~/.bash_profile
     ~~~
 
     _Same as in previous step, use `~/.bashrc` on Ubuntu, or `~/.zshrc` for Zsh._
 
 4. Restart your shell so that PATH changes take effect. (Opening a new
-   terminal tab will usually do it.) Now check if ltenv was set up:
+   terminal tab will usually do it.) Now check if tlenv was set up:
 
     ~~~ sh
-    $ type ltenv
-    #=> "ltenv is a function"
+    $ type tlenv
+    #=> "tlenv is a function"
     ~~~
 
 #### Upgrading
 
-If you've installed ltenv manually using git, you can upgrade your
+If you've installed tlenv manually using git, you can upgrade your
 installation to the cutting-edge version at any time.
 
 ~~~ sh
-$ cd ~/.ltenv
+$ cd ~/.tlenv
 $ git pull
 ~~~
 
-To use a specific release of ltenv, check out the corresponding tag:
+To use a specific release of tlenv, check out the corresponding tag:
 
 ~~~ sh
-$ cd ~/.ltenv
+$ cd ~/.tlenv
 $ git fetch
 $ git checkout v0.3.0
 ~~~
 
-### How ltenv hooks into your shell
+### How tlenv hooks into your shell
 
 Skip this section unless you must know what every line in your shell
 profile is doing.
 
-`ltenv init` is the only command that crosses the line of loading
+`tlenv init` is the only command that crosses the line of loading
 extra commands into your shell.
-Here's what `ltenv init` actually does:
+Here's what `tlenv init` actually does:
 
-1. Sets up your shims path. This is the only requirement for ltenv to
+1. Sets up your shims path. This is the only requirement for tlenv to
    function properly. You can do this by hand by prepending
-   `~/.ltenv/shims` to your `$PATH`.
+   `~/.tlenv/shims` to your `$PATH`.
 
 2. Installs autocompletion. This is entirely optional but pretty
-   useful. Sourcing `~/.ltenv/completions/ltenv.bash` will set that
-   up. There is also a `~/.ltenv/completions/ltenv.zsh` for Zsh
+   useful. Sourcing `~/.tlenv/completions/tlenv.bash` will set that
+   up. There is also a `~/.tlenv/completions/tlenv.zsh` for Zsh
    users.
 
 3. Rehashes shims. From time to time you'll need to rebuild your
    shim files. Doing this automatically makes sure everything is up to
-   date. You can always run `ltenv rehash` manually.
+   date. You can always run `tlenv rehash` manually.
 
 4. Installs the sh dispatcher. This bit is also optional, but allows
-   ltenv and plugins to change variables in your current shell, making
-   commands like `ltenv shell` possible. The sh dispatcher doesn't do
+   tlenv and plugins to change variables in your current shell, making
+   commands like `tlenv shell` possible. The sh dispatcher doesn't do
    anything crazy like override `cd` or hack your shell prompt, but if
-   for some reason you need `ltenv` to be a real script rather than a
+   for some reason you need `tlenv` to be a real script rather than a
    shell function, you can safely skip it.
 
-Run `ltenv init -` for yourself to see exactly what happens under the
+Run `tlenv init -` for yourself to see exactly what happens under the
 hood.
 
-### Installing TeXLive Versions
+### Installing TeX Live Versions
 
-The `ltenv install` command doesn't ship with ltenv out of the box yet.
+The `tlenv install` command doesn't ship with tlenv out of the box yet.
 
-### Uninstalling TeXLive Versions
+### Uninstalling TeX Live Versions
 
-### Uninstalling ltenv
+### Uninstalling tlenv
 
-The simplicity of ltenv makes it easy to temporarily disable it, or
+The simplicity of tlenv makes it easy to temporarily disable it, or
 uninstall from the system.
 
-1. To **disable** ltenv managing your TeXlive versions, simply remove the
-  `ltenv init` line from your shell startup configuration. This will
-  remove ltenv shims directory from PATH, and future invocations like
-  `latex` will execute the system latex version, as before ltenv.
+1. To **disable** tlenv managing your TeXlive versions, simply remove the
+  `tlenv init` line from your shell startup configuration. This will
+  remove tlenv shims directory from PATH, and future invocations like
+  `latex` will execute the system latex version, as before tlenv.
 
-  `ltenv` will still be accessible on the command line, but your TeXLive
+  `tlenv` will still be accessible on the command line, but your TeX Live
   apps won't be affected by version switching.
 
-2. To completely **uninstall** ltenv, perform step (1) and then remove
+2. To completely **uninstall** tlenv, perform step (1) and then remove
    its root directory. 
 
-        rm -rf `ltenv root`
+        rm -rf `tlenv root`
 
 ## Command Reference
 
 Like `git`, the `ktenv` command delegates to subcommands based on its
 first argument. The most common subcommands are:
 
-### ltenv local
+### tlenv local
 
 Sets a local application-specific LaTeX version by writing the version
 name to a `.latex-version` file in the current directory. This version
 overrides the global version, and can be overridden itself by setting
-the `LTENV_VERSION` environment variable or with the `ltenv shell`
+the `TLENV_VERSION` environment variable or with the `tlenv shell`
 command.
 
-    $ ltenv local 2016
+    $ tlenv local 2016
 
-When run without a version number, `ltenv local` reports the currently
+When run without a version number, `tlenv local` reports the currently
 configured local version. You can also unset the local version:
 
-    $ ltenv local --unset
+    $ tlenv local --unset
 
-ltenv stores local version specifications in a file named `.latex-version`.
+tlenv stores local version specifications in a file named `.latex-version`.
 
-### ltenv global
+### tlenv global
 
-Sets the global version of TeXLive to be used in all shells by writing
-the version name to the `~/.ltenv/version` file. This version can be
+Sets the global version of TeX Live to be used in all shells by writing
+the version name to the `~/.tlenv/version` file. This version can be
 overridden by an application-specific `.latex-version` file, or by
-setting the `LTENV_VERSION` environment variable.
+setting the `TLENV_VERSION` environment variable.
 
-    $ ltenv global vtex-2010
+    $ tlenv global vtex-2010
 
-The special version name `system` tells ltenv to use the system TeXLive
+The special version name `system` tells tlenv to use the system TeX Live
 (detected by searching your `$PATH`).
 
-When run without a version number, `ltenv global` reports the
+When run without a version number, `tlenv global` reports the
 currently configured global version.
 
-### ltenv shell
+### tlenv shell
 
-Sets a shell-specific TeXLive version by setting the `LTENV_VERSION`
+Sets a shell-specific TeX Live version by setting the `TLENV_VERSION`
 environment variable in your shell. This version overrides
 application-specific versions and the global version.
 
-    $ ltenv shell devel-2015
+    $ tlenv shell devel-2015
 
-When run without a version number, `ltenv shell` reports the current
-value of `LTENV_VERSION`. You can also unset the shell version:
+When run without a version number, `tlenv shell` reports the current
+value of `TLENV_VERSION`. You can also unset the shell version:
 
-    $ ltenv shell --unset
+    $ tlenv shell --unset
 
-Note that you'll need ltenv's shell integration enabled (step 3 of
+Note that you'll need tlenv's shell integration enabled (step 3 of
 the installation instructions) in order to use this command. If you
 prefer not to use shell integration, you may simply set the
-`LTENV_VERSION` variable yourself:
+`TLENV_VERSION` variable yourself:
 
-    $ export LTENV_VERSION=vtex-2010
+    $ export TLENV_VERSION=vtex-2010
 
-### ltenv versions
+### tlenv versions
 
-Lists all TeXLive versions known to ltenv, and shows an asterisk next to
+Lists all TeX Live versions known to tlenv, and shows an asterisk next to
 the currently active version.
 
-    $ ltenv versions
+    $ tlenv versions
       system
       2016
-    * vtex-2010 (set by /Users/sam/.ltenv/version)
+    * vtex-2010 (set by /Users/sam/.tlenv/version)
       vtex-2016
       devel-2016
 
-### ltenv version
+### tlenv version
 
-Displays the currently active TeXLive version, along with information on
+Displays the currently active TeX Live version, along with information on
 how it was set.
 
-    $ ltenv version
-    1.9.3-p327 (set by /Users/sam/.ltenv/version)
+    $ tlenv version
+    1.9.3-p327 (set by /Users/sam/.tlenv/version)
 
-### ltenv rehash
+### tlenv rehash
 
-Installs shims for all TeXLive executables known to ltenv (i.e.,
+Installs shims for all TeX Live executables known to tlenv (i.e.,
 `/usr/local/texlive/*/*/bin/*`). Run this command after you install a new
-version of TeXLive.
+version of TeX Live.
 
-    $ ltenv rehash
+    $ tlenv rehash
 
-### ltenv which
+### tlenv which
 
-Displays the full path to the executable that ltenv will invoke when
+Displays the full path to the executable that tlenv will invoke when
 you run the given command.
 
-    $ ltenv which dvips
+    $ tlenv which dvips
     /usr/local/texlive/2015/bin/x86_64-linux
 
-### ltenv whence
+### tlenv whence
 
-Lists all TeXLive versions with the given command installed.
+Lists all TeX Live versions with the given command installed.
 
-    $ ltenv whence dviasm
+    $ tlenv whence dviasm
     2015
     vtex-2015
 
 ## Environment variables
 
-You can affect how ltenv operates with the following settings:
+You can affect how tlenv operates with the following settings:
 
 name | default | description
 -----|---------|------------
-`LTENV_VERSION` | | Specifies the TeXLive version to be used.<br>Also see [`ltenv shell`](#ltenv-shell)
-`LTENV_ROOT` | `~/.ltenv` | Defines the directory under which TeXLive versions and shims reside.<br>Also see `ltenv root`
-`LTENV_DEBUG` | | Outputs debug information.<br>Also as: `ltenv --debug <subcommand>`
-`LTENV_HOOK_PATH` | [_see wiki_][hooks] | Colon-separated list of paths searched for ltenv hooks.
-`LTENV_DIR` | `$PWD` | Directory to start searching for `.latex-version` files.
+`TLENV_VERSION` | | Specifies the TeX Live version to be used.<br>Also see [`tlenv shell`](#tlenv-shell)
+`TLENV_ROOT` | `~/.tlenv` | Defines the directory under which TeX Live versions and shims reside.<br>Also see `tlenv root`
+`TLENV_DEBUG` | | Outputs debug information.<br>Also as: `tlenv --debug <subcommand>`
+`TLENV_HOOK_PATH` | [_see wiki_][hooks] | Colon-separated list of paths searched for tlenv hooks.
+`TLENV_DIR` | `$PWD` | Directory to start searching for `.latex-version` files.
 
 ## Development
 
-The ltenv source code is [hosted on
-GitLab](https://gitlab.vtex.lt/deimi/ltenv). It's clean, modular,
+The tlenv source code is [hosted on
+GitLab](https://gitlab.vtex.lt/deimi/tlenv). It's clean, modular,
 and easy to understand, even if you're not a shell hacker.
 
 Tests are executed using [Bats](https://github.com/sstephenson/bats):
@@ -352,7 +352,7 @@ Tests are executed using [Bats](https://github.com/sstephenson/bats):
     $ bats test/<file>.bats
 
 Please feel free to submit pull requests and file bugs on the [issue
-tracker](https://gitlab.vtex.lt/deimi/ltenv/issues).
+tracker](https://gitlab.vtex.lt/deimi/tlenv/issues).
 
 
   [ruby-build]: https://github.com/rbenv/ruby-build#readme
