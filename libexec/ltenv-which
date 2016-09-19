@@ -52,6 +52,7 @@ fi
 ## for script in "${scripts[@]}"; do
 ##   source "$script"
 ## done
+LTENV_COMMAND_PATH="${LTENV_COMMAND_PATH}/${LTENV_COMMAND}"
 
 if [ -x "$LTENV_COMMAND_PATH" ]; then
   echo "$LTENV_COMMAND_PATH"
@@ -64,7 +65,7 @@ else
   versions="$(ltenv-whence "$LTENV_COMMAND" || true)"
   if [ -n "$versions" ]; then
     { echo
-      echo "The \`$1' command exists in these Ruby versions:"
+      echo "The \`$1' command exists in these TeX Live versions:"
       echo "$versions" | sed 's/^/  /g'
       echo
     } >&2
