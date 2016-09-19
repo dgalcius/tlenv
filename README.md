@@ -229,7 +229,7 @@ uninstall from the system.
 
 ## Command Reference
 
-Like `git`, the `ktenv` command delegates to subcommands based on its
+Like `git`, the `tlenv` command delegates to subcommands based on its
 first argument. The most common subcommands are:
 
 ### tlenv local
