@@ -1,0 +1,12 @@
+---
+-
+  NAME:     2015
+  PATH:     /usr/local/texlive/2015/bin/x86_64-linux
+  TEXMFCNF: /usr/local/texlive/2015/texmf-dist/web2c
+-
+  NAME:     2010
+  PATH:     /usr/local/texlive/2010/bin/x86_64-linux
+  TEXMFCNF: /usr/local/texlive/2010/texmf-dist/web2c
+  
+... # end of file
+use YAML lint www.yamllint.com to check if config is properly set.
