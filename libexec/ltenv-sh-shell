@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 #
-# Summary: Set or show the shell-specific LaTeX version
+# Summary: Set or show the shell-specific TeX Live version
 #
 # Usage: ltenv shell <version>
 #        ltenv shell --unset
 #
-# Sets a shell-specific LaTeX version by setting the `LTENV_VERSION'
+# Sets a shell-specific TeX Live version by setting the `LTENV_VERSION'
 # environment variable in your shell. This version overrides local
 # application-specific versions and the global version.
 #
-# <version> should be a string matching a LaTeX version known to ltenv.
-# The special version string `system' will use your default system Ruby.
-# Run `ltenv versions' for a list of available LaTeX versions.
+# <version> should be a string matching a TeX Live version known to ltenv.
+# The special version string `system' will use your default system TeX Live.
+# Run `ltenv versions' for a list of available TeX Live versions.
 
 set -e
 [ -n "$LTENV_DEBUG" ] && set -x

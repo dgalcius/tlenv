@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Summary: List all LaTeX versions that contain the given executable
+# Summary: List all TeX Live versions that contain the given executable
 # Usage: ltenv whence [--path] <command>
 
 set -e

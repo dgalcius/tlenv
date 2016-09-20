@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
 #
-# Summary: Set or show the local application-specific LaTeX version
+# Summary: Set or show the local application-specific TeX Live version
 #
 # Usage: ltenv local <version>
 #        ltenv local --unset
 #
-# Sets the local application-specific LaTeX version by writing the
+# Sets the local application-specific TeX Live version by writing the
 # version name to a file named `.latex-version'.
 #
 # When you run a LaTeX command, ltenv will look for a `.latex-version'
 # file in the current directory and each parent directory. If no such
-# file is found in the tree, ltenv will use the global Ruby version
+# file is found in the tree, ltenv will use the global TeX Live version
 # specified with `ltenv global'. A version specified with the
 # `LTENV_VERSION' environment variable takes precedence over local
 # and global versions.
 #
-# <version> should be a string matching a LaTeX version known to ltenv.
-# The special version string `system' will use your default system LaTeX.
-# Run `ltenv versions' for a list of available LaTeX versions.
+# <version> should be a string matching a TeX Live version known to ltenv.
+# The special version string `system' will use your default system TeX Live.
+# Run `ltenv versions' for a list of available TeX Live versions.
 
 set -e
 [ -n "$LTENV_DEBUG" ] && set -x

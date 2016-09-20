@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-# Summary: List all LaTeX versions available to ltenv
+# Summary: List all TeX Live versions available to ltenv
 # Usage: ltenv versions [--bare] [--skip-aliases]
 #
-# Lists all LaTeX versions found in `$LTENV_ROOT/versions file'.
+# Lists all TeX Live versions found in `$LTENV_ROOT/versions file'.
 
 set -e
 [ -n "$LTENV_DEBUG" ] && set -x
@@ -101,6 +101,6 @@ done
 
 
 if [ "$num_versions" -eq 0 ] && [ -n "$include_system" ]; then
-  echo "Warning: no LaTeX detected on the system" >&2
+  echo "Warning: no TeX Live detected on the system" >&2
   exit 1
 fi
