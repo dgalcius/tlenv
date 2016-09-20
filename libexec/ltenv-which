@@ -45,18 +45,17 @@ else
     LTENV_COMMAND_TEXMFCNF=`grep "^$LTENV_VERSION " $LTENV_VERSIONS_FILE | awk '{ print $3 }'`
 fi
 
-## DG ##
+## DG ## not sure what is this for?
 ## OLDIFS="$IFS"
 ## IFS=$'\n' scripts=(`ltenv-hooks which`)
 ## IFS="$OLDIFS"
 ## for script in "${scripts[@]}"; do
 ##   source "$script"
 ## done
-LTENV_COMMAND_PATH="${LTENV_COMMAND_PATH}/${LTENV_COMMAND}"
 
-if [ -x "$LTENV_COMMAND_PATH" ]; then
-  echo "$LTENV_COMMAND_PATH"
-elif [ "$LTENV_VERSION" != "system" ] && [ ! -d "${LTENV_ROOT}/versions/${LTENV_VERSION}" ]; then
+if [ -x "$LTENV_COMMAND_PATH/$LTENV_COMMAND" ]; then
+  echo "$LTENV_COMMAND_PATH/$LTENV_COMMAND"
+elif [ "$LTENV_VERSION" != "system" ] && [ ! -d "$LTENV_COMMAND_PATH" ]; then
   echo "ltenv: version \`$LTENV_VERSION' is not installed (set by $(ltenv-version-origin))" >&2
   exit 1
 else
