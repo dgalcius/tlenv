@@ -4,20 +4,21 @@ tlenv lets you easily switch between multiple versions of TeX Live. It's simple,
 
 This project was forked from rbenv (and ruby-build), and modified for TeX Live.
 
-Use tlenv to set a TeX Live version for your document or application and guarantee
-that your development environment matches production.
 
-**Powerful in development.** Specify your TeX Live version once,
-  in a single file. Just Works™ from the command line.
-  Override the TeX Live version anytime: just set an environment variable.
+### tlenv _does..._
 
-**Rock-solid in production.** 
-  The TeX Live version dependency lives in one place—your doc/app—so upgrades
-  and rollbacks are  atomic, even when you switch versions.
+* Let you **change the global TeX Live version** on a per-user basis.
+* Provide support for **per-project TeX Live versions**.
+* Allow you to **override the TeX Live version** with an environment
+  variable.
+* Search commands from **multiple versions of TeX Live at a time**.
 
-**One thing well.** tlenv is concerned solely with switching TeX Live
-  versions. It's simple and predictable. (Can be used plugin ecosystem).
-  Specify TeX Live version as global or as local or as per folder basis.
+
+### ltenv _does not..._
+
+* **Depend on TeX Live itself.** ltenv was made from pure shell scripts.
+* **Need to be loaded into your shell.** Instead, tlenv's shim
+    approach works by adding a directory to your `$PATH`.
 
 ## Table of Contents
 
