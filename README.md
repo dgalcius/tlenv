@@ -2,7 +2,8 @@
 
 tlenv lets you easily switch between multiple versions of TeX Live. It's simple, unobtrusive, and follows the UNIX tradition of single-purpose tools that do one thing well.
 
-This project was forked from rbenv (and ruby-build), and modified for TeX Live.
+This project was forked from [rbenv](https://github.com/rbenv/rbenv)
+(and [rbenv](https://github.com/rbenv/rbenv)), and modified for TeX Live.
 
 
 ### tlenv _does..._
@@ -16,7 +17,7 @@ This project was forked from rbenv (and ruby-build), and modified for TeX Live.
 
 ### ltenv _does not..._
 
-* **Depend on TeX Live itself.** ltenv was made from pure shell scripts.
+* **Depend on TeX Live itself.** tlenv was made from pure shell scripts.
 * **Need to be loaded into your shell.** Instead, tlenv's shim
     approach works by adding a directory to your `$PATH`.
 
