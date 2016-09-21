@@ -3,7 +3,7 @@
 tlenv lets you easily switch between multiple versions of TeX Live. It's simple, unobtrusive, and follows the UNIX tradition of single-purpose tools that do one thing well.
 
 This project was forked from [rbenv](https://github.com/rbenv/rbenv)
-(and [rbenv](https://github.com/rbenv/rbenv)), and modified for TeX Live.
+~~and [ruby-build](https://github.com/rbenv/ruby-build)~~, and modified for TeX Live.
 
 
 ### tlenv _does..._
