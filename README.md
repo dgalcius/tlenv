@@ -1,4 +1,8 @@
-# TeX Live version selection with tlenv.
+# Simple TeX Live version management: tlenv
+
+tlenv lets you easily switch between multiple versions of TeX Live. It's simple, unobtrusive, and follows the UNIX tradition of single-purpose tools that do one thing well.
+
+This project was forked from rbenv (and ruby-build), and modified for TeX Live.
 
 Use tlenv to set a TeX Live version for your document or application and guarantee
 that your development environment matches production.
